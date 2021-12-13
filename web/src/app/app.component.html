@@ -1,0 +1,30 @@
+<mat-sidenav-container>
+  <mat-sidenav #sidenav id="sidenav" fxLayout="column stretch" fxLayoutAlign="center" fxLayoutGap="20px" *ngIf="userData">
+    <div fxLayout="column" fxLayoutAlign="center" id="userInfo">
+      <div>
+        <h1><strong>{{ userData.preferred_username }}</strong></h1>
+        <div><small>{{ userData.email }}</small></div>
+        <button mat-stroked-button style="margin-top: 10px;" (click)="logout()">Logout</button>
+      </div>
+    </div>
+    <a mat-button class="menu-btn" routerLink="/items" (click)="sidenav.close()">Item Stok</a>
+    <mat-divider></mat-divider>
+    <button mat-button class="menu-btn">Laporan</button>
+    <mat-divider></mat-divider>
+    <button mat-button class="menu-btn">Pengaturan</button>
+    <mat-divider></mat-divider>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div fxLayout="column" fxLayoutGap="10px">
+      <mat-toolbar color="primary">
+        <button mat-icon-button (click)="toggle()"><mat-icon>menu</mat-icon></button>
+        <a mat-button routerLink="/dashboard">Latihan</a>
+      </mat-toolbar>
+      <div fxFill>
+        <div style="padding: 20px">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

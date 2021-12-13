@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stock-item-service
+  labels:
+    app: stock-item-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stock-item-service
+  template:
+    metadata:
+      labels:
+        app: stock-item-service
+    spec:
+      containers:
+        - name: stock-item-service
+          image: stock-item-service:latest
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stock-item-service
+spec:
+  type: ClusterIP
+  selector:
+    app: stock-item-service
+  ports:
+    - name: http
+      port: 8080

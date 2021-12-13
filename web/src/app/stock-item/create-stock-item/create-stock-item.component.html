@@ -1,0 +1,41 @@
+<div>
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <mat-card>
+      <mat-card-title>Tambah Item Baru</mat-card-title>
+      <mat-card-content>
+          <div fxLayout="column" fxLayoutGap="15px">
+            <div fxLayout="row" fxLayoutGap="15px">
+              <mat-form-field fxFlex="40%">
+                <mat-label>SKU</mat-label>
+                <input matInput placeholder="SKU" formControlName="sku">
+                <mat-hint>SKU</mat-hint>
+              </mat-form-field>
+              <mat-form-field fxFlex="40%">
+                <mat-label>Nama</mat-label>
+                <input matInput placeholder="Nama" formControlName="name">
+                <mat-hint>Nama</mat-hint>
+              </mat-form-field>
+            </div>
+            <div fxLayout="row">
+              <mat-form-field fxFlex="40%">
+                <mat-label>Kategori</mat-label>
+                <input matInput placeholder="kategori" formControlName="category">
+                <mat-hint>Kategori</mat-hint>
+              </mat-form-field>
+            </div>
+            <div fxLayout="row">
+              <mat-form-field fxFlex="200px">
+                <mat-label>Jumlah</mat-label>
+                <input matInput placeholder="Jumlah" type="number" formControlName="quantity">
+                <mat-hint>Jumlah</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid">Simpan</button>
+        <a mat-button routerLink="../">Kembali</a>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>

@@ -1,0 +1,5 @@
+auth:
+  rootPassword: password
+  usernames: ['item-stock-service']
+  passwords: ['password']
+  databases: ['database']

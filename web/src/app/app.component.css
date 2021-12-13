@@ -1,0 +1,22 @@
+mat-sidenav-container {
+  height: 100%;
+}
+
+#sidenav {
+  width: 300px;
+}
+
+#userInfo {
+  background-color: #818ed3;
+  color: #fff;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.menu-btn {
+  width: 100%;
+  font-size: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}

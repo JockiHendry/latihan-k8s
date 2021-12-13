@@ -1,0 +1,22 @@
+antiAffinity: soft
+esJavaOpts: "-Xmx128m -Xms128m"
+secret:
+  enabled: false
+resources:
+  requests:
+    cpu: "100m"
+    memory: "512M"
+  limits:
+    cpu: "1000m"
+    memory: "512M"
+cluster:
+  routing:
+    allocation:
+      disk:
+        threshold_enabled: false
+volumeClaimTemplate:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: "standard"
+  resources:
+    requests:
+      storage: 100M

@@ -1,0 +1,16 @@
+auth:
+  createAdminUser: true
+  adminUser: user
+  adminPassword: password
+service:
+  type: ClusterIP
+  port: 80
+  httpsPort: 443
+ingress:
+  enabled: true
+  hostname: "auth.jocki.me"
+  ingressClassName: "nginx"
+  path: /
+  pathType: Prefix
+postgresql:
+  postgresqlPassword: password
