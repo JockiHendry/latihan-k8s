@@ -22,10 +22,9 @@ public class SecurityConfiguration  {
         http
             .cors().configurationSource(request ->
                 new CorsConfiguration().applyPermitDefaultValues()
-            ).and()
-            .authorizeExchange(exchanges ->
-                exchanges.anyExchange().authenticated()
             )
+            .and().authorizeExchange().pathMatchers("/actuator/**").permitAll()
+            .and().authorizeExchange(exchanges -> exchanges.anyExchange().authenticated())
             .oauth2ResourceServer(oauth2ResourceServer ->
                 oauth2ResourceServer
                     .jwt(withDefaults())
