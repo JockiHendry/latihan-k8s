@@ -1,32 +1,43 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-service
+  name: angular-web
   labels:
-    app: web-service
+    app.kubernetes.io/name: angular-web
+    app.kubernetes.io/version: 0.0.1
+    app.kubernetes.io/component: web-server
+    app.kubernetes.io/part-of: angular-web
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: web-service
+      app.kubernetes.io/name: angular-web
   template:
     metadata:
       labels:
-        app: web-service
+        app.kubernetes.io/name: angular-web
+        app.kubernetes.io/version: 0.0.1
+        app.kubernetes.io/component: web-server
+        app.kubernetes.io/part-of: angular-web
     spec:
       containers:
-        - name: web-service
-          image: web:latest
+        - name: angular-web
+          image: angular-web:latest
           imagePullPolicy: Never
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: web-service
+  name: angular-web
+  labels:
+    app.kubernetes.io/name: angular-web
+    app.kubernetes.io/version: 0.0.1
+    app.kubernetes.io/component: web-server
+    app.kubernetes.io/part-of: angular-web
 spec:
   type: ClusterIP
   selector:
-    app: web-service
+    app.kubernetes.io/name: angular-web
   ports:
     - name: http
       port: 80

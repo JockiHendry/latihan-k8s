@@ -5,7 +5,7 @@ import { AuthModule } from 'angular-auth-oidc-client';
 @NgModule({
     imports: [AuthModule.forRoot({
         config: {
-              authority: 'http://auth.jocki.me/auth/realms/latihan',
+              authority: 'https://auth.latihan.jocki.me/auth/realms/latihan',
               redirectUrl: window.location.origin,
               postLogoutRedirectUri: window.location.origin,
               clientId: 'latihan-k8s',
@@ -14,7 +14,7 @@ import { AuthModule } from 'angular-auth-oidc-client';
               silentRenew: true,
               useRefreshToken: true,
               renewTimeBeforeTokenExpiresInSeconds: 30,
-              secureRoutes: ['https://latihan.jocki.me/'],
+              secureRoutes: ['https://api.latihan.jocki.me/'],
           }
       })],
     exports: [AuthModule],

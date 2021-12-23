@@ -1,31 +1,20 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress
+  name: ingress-api
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
     nginx.ingress.kubernetes.io/enable-cors: "true"
-    nginx.ingress.kubernetes.io/cors-allow-methods: "POST"
-    nginx.ingress.kubernetes.io/cors-allow-origin: "http://localhost:4200 https://web.jocki.me"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "POST, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://web.latihan.jocki.me"
 spec:
+  ingressClassName: nginx
   tls:
     - hosts:
-      - latihan.jocki.me
-      - web.jocki.me
-      - auth.jocki.me
+        - api.latihan.jocki.me
       secretName: tls-secret
   rules:
-    - host: web.jocki.me
-      http:
-        paths:
-          - pathType: Prefix
-            path: /(.*)
-            backend:
-              service:
-                name: web-service
-                port:
-                  number: 80
-    - host: latihan.jocki.me
+    - host: api.latihan.jocki.me
       http:
         paths:
           - path: /stock-item-service/(.*)

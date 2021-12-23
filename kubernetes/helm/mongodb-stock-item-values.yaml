@@ -1,3 +1,6 @@
+labels:
+  app.kubernetes.io/part-of: stock-item-service
+  app.kubernetes.io/component: database
 auth:
   rootPassword: password
   usernames: ['item-stock-service']

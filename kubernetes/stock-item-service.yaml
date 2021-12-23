@@ -3,30 +3,46 @@ kind: Deployment
 metadata:
   name: stock-item-service
   labels:
-    app: stock-item-service
+    app.kubernetes.io/name: stock-item-service
+    app.kubernetes.io/version: 0.0.1
+    app.kubernetes.io/component: app-server
+    app.kubernetes.io/part-of: stock-item-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: stock-item-service
+      app.kubernetes.io/name: stock-item-service
   template:
     metadata:
       labels:
-        app: stock-item-service
+        app.kubernetes.io/name: stock-item-service
+        app.kubernetes.io/version: 0.0.1
+        app.kubernetes.io/component: app-server
+        app.kubernetes.io/part-of: stock-item-service
     spec:
       containers:
         - name: stock-item-service
           image: stock-item-service:latest
           imagePullPolicy: Never
+          env:
+            - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+              value: "http://keycloak/auth/realms/latihan"
+            - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI
+              value: "https://auth.latihan.jocki.me/auth/realms/latihan"
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: stock-item-service
+  labels:
+    app.kubernetes.io/name: stock-item-service
+    app.kubernetes.io/version: 0.0.1
+    app.kubernetes.io/component: app-server
+    app.kubernetes.io/part-of: stock-item-service
 spec:
   type: ClusterIP
   selector:
-    app: stock-item-service
+    app.kubernetes.io/name: stock-item-service
   ports:
     - name: http
       port: 8080

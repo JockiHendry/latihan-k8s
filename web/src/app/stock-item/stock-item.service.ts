@@ -11,7 +11,7 @@ export class StockItemService {
   constructor(private http: HttpClient) {}
 
   createNewItem(stockItem: StockItem): Observable<StockItem> {
-    return this.http.post<StockItem>('https://latihan.jocki.me/stock-item-service/items', stockItem);
+    return this.http.post<StockItem>('https://api.latihan.jocki.me/stock-item-service/items', stockItem);
   }
 
   search(keyword: string, categories: string[]): Observable<SearchResult> {
@@ -51,7 +51,7 @@ export class StockItemService {
         }
       });
     }
-    return this.http.post('https://latihan.jocki.me/search/stock-item/_search', query).pipe(
+    return this.http.post('https://api.latihan.jocki.me/search/stock-item/_search', query).pipe(
       map((response: any) => {
         return {
             items: response.hits?.hits?.map((h: any) => ({...h._source, ...h.highlight} as StockItem)) ?? [],
