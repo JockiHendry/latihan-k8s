@@ -1,0 +1,39 @@
+on:
+  workflow_call:
+    inputs:
+      registry:
+        required: true
+        type: string
+      imageName:
+        required: true
+        type: string
+      directory:
+        required: true
+        type: string
+
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Login to Container registry
+        uses: docker/login-action@v1.12.0
+        with:
+          registry: ${{ inputs.registry }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v3.6.2
+        with:
+          images: ${{ inputs.registry }}/${{ inputs.imageName }}
+          tags: |            
+            type=edge,branch=main
+      - name: Build and push
+        uses: docker/build-push-action@v2.7.0
+        with:
+          context: ./${{ inputs.directory }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

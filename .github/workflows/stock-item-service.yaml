@@ -1,0 +1,33 @@
+name: stock-item-service
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - stock-item-service/**
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: temurin
+          cache: gradle
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: Build and push
+        working-directory: ./stock-item-service
+        run: |
+          ./gradlew bootBuildImage \
+          -PregistryUsername=${{ github.actor }} -PregistryPassword=${{ secrets.GITHUB_TOKEN }} \
+          --imageName=${{ env.REGISTRY }}/jockihendry/latihan-k8s-stock-item-service:edge \
+          --publishImage

@@ -1,0 +1,16 @@
+name: angular-web-service
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - web/**
+  workflow_dispatch:
+
+jobs:
+  build-and-push-image:
+    uses: JockiHendry/latihan-k8s/.github/workflows/build-push.yaml@main
+    with:
+      registry: ghcr.io
+      imageName: JockiHendry/latihan-k8s-angular-web
+      directory: web

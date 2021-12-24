@@ -16,6 +16,13 @@ configurations {
 
 bootBuildImage {
     imageName = "stock-item-service"
+    docker {
+        publishRegistry {
+            username = registryUsername
+            password = registryPassword
+            url = 'https://ghcr.io'
+        }
+    }
 }
 
 repositories {
