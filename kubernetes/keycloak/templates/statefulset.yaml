@@ -1,0 +1,126 @@
+# Source: keycloak/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: keycloak
+  namespace: default
+  labels:
+    app.kubernetes.io/name: keycloak
+    helm.sh/chart: keycloak-5.2.3
+    app.kubernetes.io/instance: keycloak
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: keycloak
+    app.kubernetes.io/version: v0.0.1
+    env: staging
+spec:
+  replicas: 1
+  podManagementPolicy: Parallel
+  serviceName: keycloak-headless
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: keycloak
+      app.kubernetes.io/instance: keycloak
+      app.kubernetes.io/component: keycloak
+      app.kubernetes.io/version: v0.0.1
+      env: staging
+  template:
+    metadata:
+      annotations:
+        checksum/configmap-env-vars: af44b3da714c4e6b256d4c8a07a505a54aa61c2ce48e1e03d27b7175c370b6e1
+        checksum/secrets: b3ad85cf65143e8cef9995ec0330ee09f3c01ba9c010747ca0ea55b572046ab1
+      labels:
+        app.kubernetes.io/name: keycloak
+        helm.sh/chart: keycloak-5.2.3
+        app.kubernetes.io/instance: keycloak
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: keycloak
+        app.kubernetes.io/version: v0.0.1
+        env: staging
+    spec:
+      serviceAccountName: keycloak
+      affinity:
+        podAffinity: null
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: keycloak
+                    app.kubernetes.io/instance: keycloak
+                    app.kubernetes.io/version: v0.0.1
+                    env: staging
+                namespaces:
+                  - default
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity: null
+      securityContext:
+        fsGroup: 1001
+      containers:
+        - name: keycloak
+          image: 'docker.io/bitnami/keycloak:15.0.2-debian-10-r94' # kpt-set: docker.io/bitnami/keycloak:${keycloak_version}
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+          env:
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+            - name: BITNAMI_DEBUG
+              value: 'false'
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak
+                  key: admin-password
+            - name: KEYCLOAK_MANAGEMENT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak
+                  key: management-password
+            - name: KEYCLOAK_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-postgresql
+                  key: postgresql-password
+          envFrom:
+            - configMapRef:
+                name: keycloak-env-vars
+          resources:
+            limits: {}
+            requests: {}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: https
+              containerPort: 8443
+              protocol: TCP
+            - name: http-management
+              containerPort: 9990
+              protocol: TCP
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /auth/
+              port: http
+            initialDelaySeconds: 300
+            periodSeconds: 1
+            successThreshold: 1
+            timeoutSeconds: 5
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /auth/realms/master
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          volumeMounts: null
+      volumes: null

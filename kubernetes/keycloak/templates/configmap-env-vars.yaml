@@ -1,0 +1,28 @@
+# Source: keycloak/templates/configmap-env-vars.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-env-vars
+  namespace: default
+  labels:
+    app.kubernetes.io/name: keycloak
+    helm.sh/chart: keycloak-5.2.3
+    app.kubernetes.io/instance: keycloak
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: keycloak
+    app.kubernetes.io/version: v0.0.1
+    env: staging
+data:
+  KEYCLOAK_CREATE_ADMIN_USER: 'true'
+  KEYCLOAK_ADMIN_USER: user
+  KEYCLOAK_MANAGEMENT_USER: manager
+  KEYCLOAK_HTTP_PORT: '8080'
+  KEYCLOAK_PROXY_ADDRESS_FORWARDING: 'true'
+  KEYCLOAK_ENABLE_STATISTICS: 'false'
+  KEYCLOAK_DATABASE_HOST: keycloak-postgresql
+  KEYCLOAK_DATABASE_PORT: '5432'
+  KEYCLOAK_DATABASE_NAME: bitnami_keycloak
+  KEYCLOAK_DATABASE_USER: bn_keycloak
+  KEYCLOAK_CACHE_OWNERS_COUNT: '1'
+  KEYCLOAK_AUTH_CACHE_OWNERS_COUNT: '1'
+  KEYCLOAK_ENABLE_TLS: 'false'

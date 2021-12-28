@@ -4,6 +4,9 @@ metadata:
   name: ingress-web
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
+  labels:
+    app.kubernetes.io/version: v0.0.1
+    env: staging
 spec:
   ingressClassName: nginx
   tls:

@@ -1,0 +1,26 @@
+# Source: elasticsearch/templates/test/test-elasticsearch-health.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: elasticsearch-ztret-test
+  annotations:
+    helm.sh/hook: test
+    helm.sh/hook-delete-policy: hook-succeeded
+  labels:
+    app.kubernetes.io/version: v0.0.1
+    env: staging
+spec:
+  securityContext:
+    fsGroup: 1000
+    runAsUser: 1000
+  containers:
+  - name: elasticsearch-dgcyh-test
+    image: 'docker.elastic.co/elasticsearch/elasticsearch:7.15.0' # kpt-set: docker.elastic.co/elasticsearch/elasticsearch:${elasticsearch_version}
+    imagePullPolicy: IfNotPresent
+    command:
+    - sh
+    - '-c'
+    - |
+      #!/usr/bin/env bash -e
+      curl -XGET --fail 'elasticsearch-master:9200/_cluster/health?wait_for_status=yellow&timeout=1s'
+  restartPolicy: Never

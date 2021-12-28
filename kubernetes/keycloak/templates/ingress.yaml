@@ -1,0 +1,31 @@
+# Source: keycloak/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak
+  namespace: default
+  labels:
+    app.kubernetes.io/name: keycloak
+    helm.sh/chart: keycloak-5.2.3
+    app.kubernetes.io/instance: keycloak
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: keycloak
+    app.kubernetes.io/version: v0.0.1
+    env: staging
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  name: http
+      host: auth.latihan.jocki.me
+  tls:
+    - hosts:
+        - auth.latihan.jocki.me
+      secretName: tls-secret

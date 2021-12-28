@@ -1,0 +1,146 @@
+# Source: mongodb/templates/standalone/dep-sts.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-item-stock
+  namespace: default
+  labels:
+    app.kubernetes.io/name: mongodb
+    helm.sh/chart: mongodb-10.30.6
+    app.kubernetes.io/instance: mongodb-item-stock
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: mongodb
+    app.kubernetes.io/part-of: stock-item-service
+    app.kubernetes.io/version: v0.0.1
+    env: staging
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mongodb
+      app.kubernetes.io/instance: mongodb-item-stock
+      app.kubernetes.io/component: mongodb
+      app.kubernetes.io/version: v0.0.1
+      env: staging
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mongodb
+        helm.sh/chart: mongodb-10.30.6
+        app.kubernetes.io/instance: mongodb-item-stock
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: mongodb
+        app.kubernetes.io/version: v0.0.1
+        env: staging
+    spec:
+      serviceAccountName: mongodb-item-stock
+      affinity:
+        podAffinity: null
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: mongodb
+                    app.kubernetes.io/instance: mongodb-item-stock
+                    app.kubernetes.io/component: mongodb
+                    app.kubernetes.io/version: v0.0.1
+                    env: staging
+                namespaces:
+                  - default
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity: null
+      securityContext:
+        fsGroup: 1001
+        sysctls: []
+      containers:
+        - name: mongodb
+          image: 'docker.io/bitnami/mongodb:4.4.10-debian-10-r44' # kpt-set: docker.io/bitnami/mongodb:${mongodb_version}
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+          env:
+            - name: BITNAMI_DEBUG
+              value: 'false'
+            - name: MONGODB_EXTRA_USERNAMES
+              value: item-stock-service
+            - name: MONGODB_EXTRA_DATABASES
+              value: database
+            - name: MONGODB_EXTRA_PASSWORDS
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-item-stock
+                  key: mongodb-passwords
+            - name: MONGODB_ROOT_USER
+              value: root
+            - name: MONGODB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-item-stock
+                  key: mongodb-root-password
+            - name: ALLOW_EMPTY_PASSWORD
+              value: 'no'
+            - name: MONGODB_SYSTEM_LOG_VERBOSITY
+              value: '0'
+            - name: MONGODB_DISABLE_SYSTEM_LOG
+              value: 'no'
+            - name: MONGODB_DISABLE_JAVASCRIPT
+              value: 'no'
+            - name: MONGODB_ENABLE_JOURNAL
+              value: 'yes'
+            - name: MONGODB_ENABLE_IPV6
+              value: 'no'
+            - name: MONGODB_ENABLE_DIRECTORY_PER_DB
+              value: 'no'
+          ports:
+            - name: mongodb
+              containerPort: 27017
+          livenessProbe:
+            exec:
+              command:
+                - mongo
+                - '--disableImplicitSessions'
+                - '--eval'
+                - db.adminCommand('ping')
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6
+          readinessProbe:
+            exec:
+              command:
+                - bash
+                - '-ec'
+                - |
+                  # Run the proper check depending on the version
+                  [[ $(mongo --version | grep "MongoDB shell") =~ ([0-9]+\.[0-9]+\.[0-9]+) ]] && VERSION=${BASH_REMATCH[1]}
+                  . /opt/bitnami/scripts/libversion.sh
+                  VERSION_MAJOR="$(get_sematic_version "$VERSION" 1)"
+                  VERSION_MINOR="$(get_sematic_version "$VERSION" 2)"
+                  VERSION_PATCH="$(get_sematic_version "$VERSION" 3)"
+                  if [[ "$VERSION_MAJOR" -ge 4 ]] && [[ "$VERSION_MINOR" -ge 4 ]] && [[ "$VERSION_PATCH" -ge 2 ]]; then
+                      mongo --disableImplicitSessions $TLS_OPTIONS --eval 'db.hello().isWritablePrimary || db.hello().secondary' | grep -q 'true'
+                  else
+                      mongo --disableImplicitSessions $TLS_OPTIONS --eval 'db.isMaster().ismaster || db.isMaster().secondary' | grep -q 'true'
+                  fi
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6
+          resources:
+            limits: {}
+            requests: {}
+          volumeMounts:
+            - name: datadir
+              mountPath: /bitnami/mongodb
+              subPath: null
+      volumes:
+        - name: datadir
+          persistentVolumeClaim:
+            claimName: mongodb-item-stock

@@ -4,9 +4,12 @@ metadata:
   name: ingress-api
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
-    nginx.ingress.kubernetes.io/enable-cors: "true"
-    nginx.ingress.kubernetes.io/cors-allow-methods: "POST, OPTIONS"
-    nginx.ingress.kubernetes.io/cors-allow-origin: "https://web.latihan.jocki.me"
+    nginx.ingress.kubernetes.io/enable-cors: 'true'
+    nginx.ingress.kubernetes.io/cors-allow-methods: 'POST, OPTIONS'
+    nginx.ingress.kubernetes.io/cors-allow-origin: 'https://web.latihan.jocki.me'
+  labels:
+    app.kubernetes.io/version: v0.0.1
+    env: staging
 spec:
   ingressClassName: nginx
   tls:

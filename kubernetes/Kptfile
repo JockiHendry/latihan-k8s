@@ -1,0 +1,21 @@
+apiVersion: kpt.dev/v1
+kind: Kptfile
+metadata:
+  name: latihan-k8s
+info:
+  description: Ini adalah latihan-k8s untuk belajar memakai Kubernetes.
+pipeline:
+  mutators:
+    - image: 'gcr.io/kpt-fn/set-labels:v0.1.5'
+      configMap:
+        app.kubernetes.io/version: v0.0.1
+        env: staging
+    - image: 'gcr.io/kpt-fn/apply-setters:v0.2.0'
+      configMap:
+        elasticsearch_version: 7.15.0
+        keycloak_postgre_version: 11.14.0-debian-10-r0
+        keycloak_version: 15.0.2-debian-10-r94
+        mongodb_version: 4.4.10-debian-10-r44
+        rabbitmq_version: 3.9.11-debian-10-r0
+        stock_item_service_version: edge
+        web_service_version: edge

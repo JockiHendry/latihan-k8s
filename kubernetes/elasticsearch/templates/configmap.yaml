@@ -1,0 +1,15 @@
+# Source: elasticsearch/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: elasticsearch-master-config
+  labels:
+    heritage: Helm
+    release: elasticsearch
+    chart: elasticsearch
+    app: elasticsearch-master
+    app.kubernetes.io/version: v0.0.1
+    env: staging
+data:
+  elasticsearch.yml: |
+    cluster.routing.allocation.disk.threshold_enabled: false
