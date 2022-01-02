@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: keycloak-setup-job
+  labels:
+    app.kubernetes.io/name: keycloak-setup-job
+    app.kubernetes.io/version: v0.0.1
+    app.kubernetes.io/part-of: keycloak
+spec:
+  ttlSecondsAfterFinished: 100
+  backoffLimit: 1
+  template:
+    spec:
+      containers:
+        - name: keycloak-setup-job
+          image: 'docker.io/bitnami/keycloak:15.0.2-debian-10-r94' # kpt-set: docker.io/bitnami/keycloak:${keycloak_version}
+          env:
+            - name: ADMIN_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: keycloak-env-vars
+                  key: KEYCLOAK_ADMIN_USER
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak
+                  key: admin-password
+            - name: USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak
+                  key: user-password
+          command:
+            - /bin/sh
+          args:
+            - '-c'
+            - |
+              kcadm.sh create realms -s realm=latihan -s enabled=true --no-config --server https://auth.latihan.jocki.me/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD}; kcadm.sh create clients -r latihan -s clientId=latihan-k8s -s 'redirectUris=["https://web.latihan.jocki.me/*"]' -s 'webOrigins=["*"]' -s publicClient=true -s protocol=openid-connect -s enabled=true --no-config --server https://auth.latihan.jocki.me/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD}; kcadm.sh create users -r latihan -s username=admin -s email=admin@jocki.me -s emailVerified=true -s enabled=true --no-config --server https://auth.latihan.jocki.me/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD}; kcadm.sh set-password -r latihan --username admin -p ${USER_PASSWORD} --no-config --server https://auth.latihan.jocki.me/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD};
+      restartPolicy: Never
