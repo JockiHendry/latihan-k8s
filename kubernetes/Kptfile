@@ -12,6 +12,7 @@ pipeline:
         env: staging
     - image: 'gcr.io/kpt-fn/apply-setters:v0.2.0'
       configMap:
+        domain: latihan.jocki.me
         elasticsearch_version: 7.15.0
         keycloak_postgre_version: 11.14.0-debian-10-r0
         keycloak_version: 15.0.2-debian-10-r94

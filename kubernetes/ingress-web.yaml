@@ -11,10 +11,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - web.latihan.jocki.me
+        - web.latihan.jocki.me # kpt-set: web.${domain}
       secretName: tls-secret
   rules:
-    - host: web.latihan.jocki.me
+    - host: web.latihan.jocki.me # kpt-set: web.${domain}
       http:
         paths:
           - pathType: Prefix

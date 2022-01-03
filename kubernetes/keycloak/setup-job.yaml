@@ -15,6 +15,8 @@ spec:
         - name: keycloak-setup-job
           image: 'docker.io/bitnami/keycloak:15.0.2-debian-10-r94' # kpt-set: docker.io/bitnami/keycloak:${keycloak_version}
           env:
+            - name: DOMAIN_NAME
+              value: latihan.jocki.me # kpt-set: ${domain}
             - name: ADMIN_USERNAME
               valueFrom:
                 configMapKeyRef:
@@ -35,5 +37,5 @@ spec:
           args:
             - '-c'
             - |
-              kcadm.sh create realms -s realm=latihan -s enabled=true --no-config --server https://auth.latihan.jocki.me/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD}; kcadm.sh create clients -r latihan -s clientId=latihan-k8s -s 'redirectUris=["https://web.latihan.jocki.me/*"]' -s 'webOrigins=["*"]' -s publicClient=true -s protocol=openid-connect -s enabled=true --no-config --server https://auth.latihan.jocki.me/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD}; kcadm.sh create users -r latihan -s username=admin -s email=admin@jocki.me -s emailVerified=true -s enabled=true --no-config --server https://auth.latihan.jocki.me/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD}; kcadm.sh set-password -r latihan --username admin -p ${USER_PASSWORD} --no-config --server https://auth.latihan.jocki.me/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD};
+              kcadm.sh create realms -s realm=latihan -s enabled=true --no-config --server https://auth.${DOMAIN_NAME}/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD}; kcadm.sh create clients -r latihan -s clientId=latihan-k8s -s "redirectUris=[\"https://web.${DOMAIN_NAME}/*\"]" -s 'webOrigins=["*"]' -s publicClient=true -s protocol=openid-connect -s enabled=true --no-config --server https://auth.${DOMAIN_NAME}/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD}; kcadm.sh create users -r latihan -s username=admin -s email=admin@jocki.me -s emailVerified=true -s enabled=true --no-config --server https://auth.${DOMAIN_NAME}/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD}; kcadm.sh set-password -r latihan --username admin -p ${USER_PASSWORD} --no-config --server https://auth.${DOMAIN_NAME}/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD};
       restartPolicy: Never

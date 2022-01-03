@@ -6,7 +6,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
     nginx.ingress.kubernetes.io/enable-cors: 'true'
     nginx.ingress.kubernetes.io/cors-allow-methods: 'POST, OPTIONS'
-    nginx.ingress.kubernetes.io/cors-allow-origin: 'https://web.latihan.jocki.me'
+    nginx.ingress.kubernetes.io/cors-allow-origin: 'https://web.latihan.jocki.me' # kpt-set: https://web.${domain}
   labels:
     app.kubernetes.io/version: v0.0.1
     env: staging
@@ -14,10 +14,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - api.latihan.jocki.me
+        - api.latihan.jocki.me # kpt-set: api.${domain}
       secretName: tls-secret
   rules:
-    - host: api.latihan.jocki.me
+    - host: api.latihan.jocki.me # kpt-set: api.${domain}
       http:
         paths:
           - path: /stock-item-service/(.*)
