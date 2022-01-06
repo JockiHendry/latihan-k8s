@@ -9,6 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
+  IMAGE_NAME: jockihendry/latihan-k8s-stock-item-service
 
 jobs:
   build-image:
@@ -24,10 +25,18 @@ jobs:
           cache: gradle
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v3.6.2
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha
+            type=edge,branch=main
       - name: Build and push
         working-directory: ./stock-item-service
         run: |
-          ./gradlew bootBuildImage \
-          -PregistryUsername=${{ github.actor }} -PregistryPassword=${{ secrets.GITHUB_TOKEN }} \
-          --imageName=${{ env.REGISTRY }}/jockihendry/latihan-k8s-stock-item-service:edge \
+          ./gradlew test bootBuildImage \
+          -PregistryUsername=${{ github.actor }} -PregistryPassword=${{ secrets.GITHUB_TOKEN }} -PimageTags="${{ join(fromJSON(steps.meta.outputs.json).tags) }}" \
+          --imageName=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} \
           --publishImage

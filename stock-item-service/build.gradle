@@ -16,6 +16,7 @@ configurations {
 
 bootBuildImage {
     imageName = "stock-item-service"
+    tags = imageTags?.split(',')*.trim() ?: 'edge'
     docker {
         publishRegistry {
             username = registryUsername
