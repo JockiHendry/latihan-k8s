@@ -1,4 +1,4 @@
-package me.jocki.latihank8s.stockitemservice;
+package me.jocki.latihank8s.stockitemservice.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +19,8 @@ public class SecurityConfiguration  {
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        http
+        return http
+            .csrf().disable()
             .cors().configurationSource(request ->
                 new CorsConfiguration().applyPermitDefaultValues()
             )
@@ -28,8 +29,8 @@ public class SecurityConfiguration  {
             .oauth2ResourceServer(oauth2ResourceServer ->
                 oauth2ResourceServer
                     .jwt(withDefaults())
-            );
-        return http.build();
+            )
+            .build();
     }
 
     @Bean

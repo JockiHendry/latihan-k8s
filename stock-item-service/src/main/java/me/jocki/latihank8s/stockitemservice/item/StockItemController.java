@@ -28,15 +28,19 @@ public class StockItemController {
     }
 
     @PostMapping
-    public Mono<StockItemCreateRequestDto> create(@RequestBody StockItemCreateRequestDto createRequestDto) {
+    public Mono<StockItemCreateResponseDto> create(@RequestBody StockItemCreateRequestDto createRequestDto) {
         return this.stockItemRepository.findBySku(createRequestDto.getSku())
-            .flatMap(__ -> Mono.error(new RuntimeException("Product already exists")))
-            .switchIfEmpty(Mono.fromCallable(() -> {
-                var command = new CreateStockItemCommand(createRequestDto.getSku(), createRequestDto.getName(), createRequestDto.getQuantity(), createRequestDto.getCategory());
-                amqpTemplate.convertAndSend("stock-item-service.topic", "command.createStockItem", command);
-                return createRequestDto;
-            }))
-            .cast(StockItemCreateRequestDto.class);
+            .hasElement()
+            .flatMap(v -> {
+                if (v) {
+                    return Mono.error(new RuntimeException("Product already exists"));
+                }
+                return stockItemRepository.save(new StockItem(null, createRequestDto.getSku(), createRequestDto.getName(), createRequestDto.getQuantity(), createRequestDto.getCategory()));
+            })
+            .map(s -> {
+                amqpTemplate.convertAndSend("stock-item-service.topic", "event.stockItemCreated", new StockItemCreatedEvent(s.getSku(), s.getName(), s.getCategory(), s.getQuantity()));
+                return new StockItemCreateResponseDto(s);
+            });
     }
 
 }

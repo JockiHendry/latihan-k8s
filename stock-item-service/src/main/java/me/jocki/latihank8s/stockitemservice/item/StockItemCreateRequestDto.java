@@ -1,12 +1,13 @@
 package me.jocki.latihank8s.stockitemservice.item;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
-@Data
+@Data @AllArgsConstructor
 public class StockItemCreateRequestDto {
 
     @NotBlank

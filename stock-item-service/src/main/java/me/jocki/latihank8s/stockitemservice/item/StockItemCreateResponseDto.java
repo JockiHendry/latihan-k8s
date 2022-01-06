@@ -1,15 +1,16 @@
 package me.jocki.latihank8s.stockitemservice.item;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
 
-@Data
-public class StockItemDto {
+@Data @NoArgsConstructor
+public class StockItemCreateResponseDto {
 
-    public StockItemDto(StockItem stockItem) {
+    public StockItemCreateResponseDto(StockItem stockItem) {
+        this.id = stockItem.getId();
         this.sku = stockItem.getSku();
         this.name = stockItem.getName();
         this.quantity = stockItem.getQuantity();
@@ -17,12 +18,14 @@ public class StockItemDto {
     }
 
     @NotBlank
+    private String id;
+
+    @NotBlank
     private String sku;
 
     @NotBlank
     private String name;
 
-    @PositiveOrZero
     @NotNull
     private Long quantity;
 
