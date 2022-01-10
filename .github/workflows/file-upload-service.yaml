@@ -1,0 +1,16 @@
+name: file-upload-service
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - file-upload-service/**
+  workflow_dispatch:
+
+jobs:
+  build-and-push-image:
+    uses: JockiHendry/latihan-k8s/.github/workflows/build-push.yaml@main
+    with:
+      registry: ghcr.io
+      imageName: JockiHendry/latihan-k8s-file-upload-service
+      directory: file-upload-service
