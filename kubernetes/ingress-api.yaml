@@ -34,3 +34,10 @@ spec:
                 name: elasticsearch-master
                 port:
                   number: 9200
+          - path: /files/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: file-upload-service
+                port:
+                  number: 8080

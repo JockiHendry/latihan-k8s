@@ -20,3 +20,4 @@ pipeline:
         rabbitmq_version: 3.9.11-debian-10-r0
         stock_item_service_version: edge
         web_service_version: edge
+        file_upload_service_version: edge
