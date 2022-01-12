@@ -1,0 +1,20 @@
+import os
+
+
+class Config:
+    RABBITMQ_HOST = 'localhost'
+    RABBITMQ_PORT = '5672'
+    RABBITMQ_USER = 'user'
+    RABBITMQ_PASSWORD = 'password'
+    MAX_CONTENT_LENGTH = 50_000_000
+    UPLOAD_FOLDER = '/uploads'
+
+
+class DevelopmentConfig(Config):
+    UPLOAD_FOLDER = '/tmp/uploads'
+
+
+class ProductionConfig(Config):
+    RABBITMQ_HOST = 'rabbitmq'
+    RABBITMQ_USER = os.environ.get('RABBITMQ_USER')
+    RABBITMQ_PASSWORD = os.environ.get('RABBITMQ_PASSWORD')

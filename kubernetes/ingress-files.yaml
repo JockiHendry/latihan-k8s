@@ -1,12 +1,13 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-api
+  name: ingress-files
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
     nginx.ingress.kubernetes.io/enable-cors: 'true'
     nginx.ingress.kubernetes.io/cors-allow-methods: 'POST, OPTIONS'
     nginx.ingress.kubernetes.io/cors-allow-origin: 'https://web.latihan.jocki.me' # kpt-set: https://web.${domain}
+    nginx.ingress.kubernetes.io/proxy-body-size: '50m'
   labels:
     app.kubernetes.io/version: v0.0.1
     env: staging
@@ -17,20 +18,13 @@ spec:
         - api.latihan.jocki.me # kpt-set: api.${domain}
       secretName: tls-secret
   rules:
-    - host: api.latihan.jocki.me # kpt-set: api.${domain}
+    - host: files.latihan.jocki.me # kpt-set: api.${domain}
       http:
         paths:
-          - path: /stock-item-service/(.*)
+          - path: /(.*)
             pathType: Prefix
             backend:
               service:
-                name: stock-item-service
+                name: file-upload-service
                 port:
                   number: 8080
-          - path: /search/(.*)
-            pathType: Prefix
-            backend:
-              service:
-                name: elasticsearch-master
-                port:
-                  number: 9200

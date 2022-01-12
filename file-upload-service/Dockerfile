@@ -1,7 +1,7 @@
 FROM alpine:3.15
 EXPOSE 8080
 WORKDIR /app
-RUN apk add --no-cache uwsgi-python3 python3 cmd:pip3
+RUN apk add --no-cache uwsgi-python3 python3 cmd:pip3 imagemagick
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 COPY . .

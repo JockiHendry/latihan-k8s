@@ -24,6 +24,15 @@ spec:
       containers:
         - name: file-upload-service
           image: 'ghcr.io/jockihendry/latihan-k8s-file-upload-service:edge' # kpt-set: ghcr.io/jockihendry/latihan-k8s-file-upload-service:${file_upload_service_version}
+          imagePullPolicy: Never
+          env:
+            - name: RABBITMQ_USER
+              value: 'user'
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq
+                  key: rabbitmq-password
           livenessProbe:
             tcpSocket:
               port: 7070
@@ -67,8 +76,9 @@ data:
   nginx.conf: |
     server {
       listen 8080;
-      location /upload {
+      location ~* ^/.*/upload$ {
         uwsgi_pass 127.0.0.1:7070;
+        client_max_body_size 50m;
         include uwsgi_params;
       }
       location / {
