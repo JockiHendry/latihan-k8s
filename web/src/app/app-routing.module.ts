@@ -7,7 +7,7 @@ import {AutoLoginAllRoutesGuard} from 'angular-auth-oidc-client';
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AutoLoginAllRoutesGuard] },
-  { path: 'items', loadChildren: () => import('./stock-item/stock-item.module').then(m => m.StockItemModule), canActivate: [AutoLoginAllRoutesGuard] },
+  { path: 'items', loadChildren: () => import('./stock-item/stock-item.module').then(m => m.StockItemModule), canLoad: [AutoLoginAllRoutesGuard] },
   { path: '**', component: PageNotFoundComponent },
 ];
 

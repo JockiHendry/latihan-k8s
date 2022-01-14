@@ -23,17 +23,17 @@ export class CreateStockItemComponent {
 
   save() {
     if (!this.form.valid) {
-      this.snackbar.open('Maaf, data masih belum terisi dengan benar.', '', {duration: 30000});
+      this.snackbar.open('Maaf, data masih belum terisi dengan benar.');
       return;
     }
     this.stockItemService.createNewItem(this.form.value).subscribe({
       next: (result) => {
-        this.snackbar.open(`Item ${result.name} berhasil ditambahkan.`, '', {duration: 30000});
+        this.snackbar.open(`Item ${result.name} berhasil ditambahkan.`);
         this.router.navigate(['../'], {relativeTo: this.route});
       },
       error: (errResponse) => {
         console.log(errResponse);
-        this.snackbar.open(errResponse?.error?.error ?? errResponse.message, '', {duration: 30000});
+        this.snackbar.open(errResponse?.error?.error ?? errResponse.message);
       }
     });
   }

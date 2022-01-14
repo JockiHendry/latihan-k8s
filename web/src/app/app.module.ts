@@ -16,6 +16,8 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatCardModule} from '@angular/material/card';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AuthInterceptor} from 'angular-auth-oidc-client';
+import {BackendInterceptor} from './interceptors/backend.interceptor';
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -34,9 +36,12 @@ import {AuthInterceptor} from 'angular-auth-oidc-client';
     MatButtonModule,
     MatIconModule,
     MatDividerModule,
-    MatCardModule
+    MatCardModule,
+    MatSnackBarModule,
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: BackendInterceptor, multi: true },
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000} },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]

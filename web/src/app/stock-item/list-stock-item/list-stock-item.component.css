@@ -2,7 +2,7 @@ table {
   width: 100%;
 }
 
-/deep/ td em {
+:host ::ng-deep td em {
   background-color: #f1e740;
   font-style: normal;
 }

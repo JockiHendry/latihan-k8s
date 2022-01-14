@@ -16,8 +16,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.oidcSecurityService.checkAuth().subscribe((response) => {
-      this.userData = response.userData;
+    this.oidcSecurityService.userData$.subscribe((result) => {
+      if (result?.userData) {
+        this.userData = result.userData;
+      }
     });
   }
 
