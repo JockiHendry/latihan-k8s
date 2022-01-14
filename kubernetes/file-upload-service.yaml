@@ -24,10 +24,9 @@ spec:
       containers:
         - name: file-upload-service
           image: 'ghcr.io/jockihendry/latihan-k8s-file-upload-service:edge' # kpt-set: ghcr.io/jockihendry/latihan-k8s-file-upload-service:${file_upload_service_version}
-          imagePullPolicy: Never
           env:
             - name: RABBITMQ_USER
-              value: 'user'
+              value: user
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:

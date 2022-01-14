@@ -7,7 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/enable-cors: 'true'
     nginx.ingress.kubernetes.io/cors-allow-methods: 'POST, OPTIONS'
     nginx.ingress.kubernetes.io/cors-allow-origin: 'https://web.latihan.jocki.me' # kpt-set: https://web.${domain}
-    nginx.ingress.kubernetes.io/proxy-body-size: '50m'
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
   labels:
     app.kubernetes.io/version: v0.0.1
     env: staging
