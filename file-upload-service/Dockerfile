@@ -6,5 +6,5 @@ COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 COPY . .
 RUN mkdir /uploads && chown uwsgi /uploads && chgrp uwsgi /uploads
-CMD ["uwsgi", "--socket", "0.0.0.0:7070", "--protocol", "uwsgi", "--plugins", "python3", \
+CMD ["uwsgi", "--socket", "0.0.0.0:7070", "--http-socket", "0.0.0.0:6060", "--protocol", "uwsgi", "--plugins", "python3", \
      "--wsgi-file", "app.py", "--callable", "app", "--uid", "uwsgi"]

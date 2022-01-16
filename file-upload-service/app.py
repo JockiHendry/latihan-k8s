@@ -60,5 +60,12 @@ def upload(folder=None):
     return {'error': 'Invalid filename'}, 500
 
 
+@app.route('/health', methods=['GET'])
+def health():
+    if worker_process.is_alive():
+        return {'status': 'ok'}, 200
+    return {'status': 'error'}, 500
+
+
 if __name__ == '__main__':
     app.run()

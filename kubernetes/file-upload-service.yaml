@@ -21,6 +21,7 @@ spec:
     spec:
       securityContext:
         fsGroup: 1001
+        fsGroupChangePolicy: OnRootMismatch
       containers:
         - name: file-upload-service
           image: 'ghcr.io/jockihendry/latihan-k8s-file-upload-service:edge' # kpt-set: ghcr.io/jockihendry/latihan-k8s-file-upload-service:${file_upload_service_version}
@@ -33,8 +34,10 @@ spec:
                   name: rabbitmq
                   key: rabbitmq-password
           livenessProbe:
-            tcpSocket:
-              port: 7070
+            httpGet:
+              path: /health
+              port: 6060
+            periodSeconds: 60
           volumeMounts:
             - name: uploads
               mountPath: /uploads

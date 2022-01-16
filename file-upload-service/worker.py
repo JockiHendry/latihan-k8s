@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 ALLOWED_IMAGES = {'pdf', 'png', 'jpg', 'jpeg', 'gif', 'svg'}
 
 
-def on_file_uploaded(ch, method, _properties, body):
+def on_file_uploaded(_ch, _method, _properties, body):
     message = json.loads(body)
     logger.info('Receiving message: %s', message)
     if message['filename'].rsplit('.', 1)[1].lower() in ALLOWED_IMAGES:
@@ -18,8 +18,6 @@ def on_file_uploaded(ch, method, _properties, body):
         thumbnail_file = os.path.join(thumbnail_folder, message['filename'])
         subprocess.call(['convert', message['filepath'], '-thumbnail', '200x200>', thumbnail_file])
         logger.info('Thumbnail created: %s', thumbnail_file)
-    ch.basic_ack(method.delivery_tag)
-    logger.info('Message %d acknowledged', method.delivery_tag)
 
 
 def worker_setup(host, port, user, password):
@@ -30,5 +28,5 @@ def worker_setup(host, port, user, password):
     ))
     channel = connection.channel()
     channel.queue_declare('fileUploaded')
-    channel.basic_consume('fileUploaded', on_file_uploaded)
+    channel.basic_consume('fileUploaded', on_file_uploaded, auto_ack=True)
     channel.start_consuming()

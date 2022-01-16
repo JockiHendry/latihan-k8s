@@ -15,10 +15,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - api.latihan.jocki.me # kpt-set: api.${domain}
+        - files.latihan.jocki.me # kpt-set: files.${domain}
       secretName: tls-secret
   rules:
-    - host: files.latihan.jocki.me # kpt-set: api.${domain}
+    - host: files.latihan.jocki.me # kpt-set: files.${domain}
       http:
         paths:
           - path: /(.*)
