@@ -1,35 +1,32 @@
 <div>
-  <form [formGroup]="form" (ngSubmit)="save()">
+  <form [formGroup]="form" (ngSubmit)="save(); formElement.resetForm(); sku.focus()" #formElement="ngForm">
     <mat-card>
       <mat-card-title>Tambah Item Baru</mat-card-title>
       <mat-card-content>
-          <div fxLayout="column" fxLayoutGap="15px">
-            <div fxLayout="row" fxLayoutGap="15px">
-              <mat-form-field fxFlex="40%">
+          <div fxLayout="row" fxLayoutGap="15px">
+            <div fxLayout="column" fxLayoutGap="15px" fxFlex>
+              <mat-form-field>
                 <mat-label>SKU</mat-label>
-                <input matInput placeholder="SKU" formControlName="sku">
+                <input matInput placeholder="SKU" formControlName="sku" #sku>
                 <mat-hint>SKU</mat-hint>
               </mat-form-field>
-              <mat-form-field fxFlex="40%">
+              <mat-form-field>
                 <mat-label>Nama</mat-label>
                 <input matInput placeholder="Nama" formControlName="name">
                 <mat-hint>Nama</mat-hint>
               </mat-form-field>
-            </div>
-            <div fxLayout="row">
-              <mat-form-field fxFlex="40%">
+              <mat-form-field>
                 <mat-label>Kategori</mat-label>
-                <input matInput placeholder="kategori" formControlName="category">
+                <input matInput placeholder="Kategori" formControlName="category">
                 <mat-hint>Kategori</mat-hint>
               </mat-form-field>
-            </div>
-            <div fxLayout="row">
-              <mat-form-field fxFlex="200px">
+              <mat-form-field >
                 <mat-label>Jumlah</mat-label>
                 <input matInput placeholder="Jumlah" type="number" formControlName="quantity">
                 <mat-hint>Jumlah</mat-hint>
               </mat-form-field>
             </div>
+            <app-image-upload bucket="item" fxFlex="230px" formControlName="itemImage"></app-image-upload>
           </div>
       </mat-card-content>
       <mat-card-actions>

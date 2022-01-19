@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {StockItemService} from '../stock-item.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-create-stock-item',
@@ -14,12 +13,12 @@ export class CreateStockItemComponent {
   form = this.fb.group({
     sku: ['', Validators.required],
     name: ['', Validators.required],
+    itemImage: [''],
     category: ['', Validators.required],
     quantity: [0, Validators.min(0)],
   });
 
-  constructor(private fb: FormBuilder, private stockItemService: StockItemService, private snackbar: MatSnackBar,
-              private route: ActivatedRoute, private router: Router) { }
+  constructor(private fb: FormBuilder, private stockItemService: StockItemService, private snackbar: MatSnackBar) {}
 
   save() {
     if (!this.form.valid) {
@@ -29,7 +28,7 @@ export class CreateStockItemComponent {
     this.stockItemService.createNewItem(this.form.value).subscribe({
       next: (result) => {
         this.snackbar.open(`Item ${result.name} berhasil ditambahkan.`);
-        this.router.navigate(['../'], {relativeTo: this.route});
+        this.form.reset({}, {onlySelf: true});
       },
       error: (errResponse) => {
         console.log(errResponse);

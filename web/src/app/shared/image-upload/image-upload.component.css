@@ -1,0 +1,17 @@
+.upload-container {
+  width: 200px;
+  height: 200px;
+  background-color: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-container button {
+  text-align: center;
+  color: #777;
+}
+
+.button-after-upload {
+  position: absolute;
+}

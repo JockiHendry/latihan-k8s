@@ -1,0 +1,4 @@
+<div [style.width]="width + 'px'" [style.height]="height + 'px'" class="container">
+  <img #img [src]="thumbnailURL" (error)="img.src=fileURL" *ngIf="thumbnailURL && fileURL"
+       [style.width]="width + 'px'" [style.height]="height + 'px'" [alt]="'Image of ' + filename">
+</div>

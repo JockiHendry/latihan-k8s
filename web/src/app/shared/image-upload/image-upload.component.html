@@ -1,0 +1,13 @@
+<div @show class="upload-container" (mouseenter)="focus=true" (mouseleave)="focus=false" *ngIf="!uploadedFilename">
+  <div class="button" *ngIf="!uploadedFilename">
+    <button type="button" mat-raised-button (click)="fileElement.click()">Upload Gambar</button>
+    <input type="file" accept=".png,.jpg,.jpeg,.gif,.svg" #fileElement (change)="onFileSelected(fileElement)" hidden>
+    <mat-progress-bar mode="determinate" [value]="uploadProgress" *ngIf="uploadProgress > 0"></mat-progress-bar>
+  </div>
+</div>
+<div class="upload-container" (mouseenter)="focus=true" (mouseleave)="focus=false" *ngIf="uploadedFilename">
+  <app-image [bucket]="bucket" [fileServerUrl]="fileServerUrl" [width]="200" [height]="200" [filename]="uploadedFilename"></app-image>
+  <div class="button-after-upload" @show *ngIf="focus">
+    <button type="button" mat-raised-button (click)="delete()">Hapus</button>
+  </div>
+</div>

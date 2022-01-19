@@ -14,6 +14,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatListModule} from '@angular/material/list';
 import {MatBadgeModule} from '@angular/material/badge';
+import {SharedModule} from '../shared/shared.module';
 
 
 
@@ -22,20 +23,21 @@ import {MatBadgeModule} from '@angular/material/badge';
     ListStockItemComponent,
     CreateStockItemComponent
   ],
-  imports: [
-    CommonModule,
-    StockItemRoutingModule,
-    MatCardModule,
-    MatTableModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatButtonModule,
-    MatSnackBarModule,
-    FlexModule,
-    ReactiveFormsModule,
-    MatListModule,
-    MatBadgeModule,
-  ]
+    imports: [
+        CommonModule,
+        StockItemRoutingModule,
+        MatCardModule,
+        MatTableModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        MatButtonModule,
+        MatSnackBarModule,
+        FlexModule,
+        ReactiveFormsModule,
+        MatListModule,
+        MatBadgeModule,
+        SharedModule,
+    ]
 })
 export class StockItemModule { }
