@@ -16,6 +16,8 @@ public class StockItemCreateRequestDto {
     @NotBlank
     private String name;
 
+    private String itemImage;
+
     @PositiveOrZero
     @NotNull
     private Long quantity;

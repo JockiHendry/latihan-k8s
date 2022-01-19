@@ -21,7 +21,7 @@ public class StockItemEventListener {
     ))
     public void handleStockItemCreatedEvent(StockItemCreatedEvent stockItemCreatedEvent) {
         StockItemView stockItemView = new StockItemView(stockItemCreatedEvent.getSku(), stockItemCreatedEvent.getName(),
-            stockItemCreatedEvent.getCategory(), stockItemCreatedEvent.getQuantity());
+            stockItemCreatedEvent.getItemImage(), stockItemCreatedEvent.getCategory(), stockItemCreatedEvent.getQuantity());
         stockItemViewRepository.save(stockItemView);
     }
 

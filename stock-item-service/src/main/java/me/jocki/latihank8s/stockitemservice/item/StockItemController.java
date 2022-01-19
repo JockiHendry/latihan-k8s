@@ -35,10 +35,12 @@ public class StockItemController {
                 if (v) {
                     return Mono.error(new RuntimeException("Product already exists"));
                 }
-                return stockItemRepository.save(new StockItem(null, createRequestDto.getSku(), createRequestDto.getName(), createRequestDto.getQuantity(), createRequestDto.getCategory()));
+                return stockItemRepository.save(new StockItem(createRequestDto.getSku(), createRequestDto.getName(),
+                        createRequestDto.getItemImage(), createRequestDto.getQuantity(), createRequestDto.getCategory()));
             })
             .map(s -> {
-                amqpTemplate.convertAndSend("stock-item-service.topic", "event.stockItemCreated", new StockItemCreatedEvent(s.getSku(), s.getName(), s.getCategory(), s.getQuantity()));
+                amqpTemplate.convertAndSend("stock-item-service.topic", "event.stockItemCreated",
+                        new StockItemCreatedEvent(s.getSku(), s.getName(), s.getItemImage(), s.getCategory(), s.getQuantity()));
                 return new StockItemCreateResponseDto(s);
             });
     }

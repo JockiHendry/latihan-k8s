@@ -11,6 +11,7 @@ public class StockItemView {
     @Id
     private String sku;
     private String name;
+    private String itemImage;
 
     @MultiField(
         mainField = @Field(type = FieldType.Text),

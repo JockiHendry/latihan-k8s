@@ -10,6 +10,7 @@ public class StockItemCreatedEvent implements Serializable {
 
     private String sku;
     private String name;
+    private String itemImage;
     private String category;
     private Long quantity;
 

@@ -11,14 +11,13 @@ import javax.validation.constraints.PositiveOrZero;
 @AllArgsConstructor @Data
 public class StockItem {
 
-    @Id
-    private String id;
-
-    @NotBlank
+    @Id @NotBlank
     private String sku;
 
     @NotBlank
     private String name;
+
+    private String itemImage;
 
     @PositiveOrZero @NotNull
     private Long quantity;

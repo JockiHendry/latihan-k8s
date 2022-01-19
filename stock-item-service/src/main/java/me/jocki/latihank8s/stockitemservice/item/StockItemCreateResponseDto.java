@@ -10,21 +10,20 @@ import javax.validation.constraints.NotNull;
 public class StockItemCreateResponseDto {
 
     public StockItemCreateResponseDto(StockItem stockItem) {
-        this.id = stockItem.getId();
         this.sku = stockItem.getSku();
         this.name = stockItem.getName();
+        this.itemImage = stockItem.getItemImage();
         this.quantity = stockItem.getQuantity();
         this.category = stockItem.getCategory();
     }
-
-    @NotBlank
-    private String id;
 
     @NotBlank
     private String sku;
 
     @NotBlank
     private String name;
+
+    private String itemImage;
 
     @NotNull
     private Long quantity;

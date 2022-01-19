@@ -27,19 +27,19 @@ public class StockItemControllerWebFluxTest {
 
     @Test
     public void create() {
-        StockItemCreateRequestDto createRequestDto = new StockItemCreateRequestDto("sku1", "item1", 10L, "category1");
-        StockItem stockItem = new StockItem("1", "sku1", "item1", 10L, "category1");
+        StockItemCreateRequestDto createRequestDto = new StockItemCreateRequestDto("sku1", "item1", "https://files.latihan.jocki.me/file1.img", 10L, "category1");
+        StockItem stockItem = new StockItem("sku1", "item1", "https://files.latihan.jocki.me/file1.img", 10L, "category1");
         given(this.stockItemRepository.findBySku("sku1")).willReturn(Mono.empty());
         given(this.stockItemRepository.save(any())).willReturn(Mono.just(stockItem));
         this.webClient.post().uri("/items").bodyValue(createRequestDto).exchange().expectStatus().isOk()
             .expectBody(StockItemCreateResponseDto.class).isEqualTo(new StockItemCreateResponseDto(stockItem));
         verify(this.amqpTemplate, times(1)).convertAndSend("stock-item-service.topic", "event.stockItemCreated",
-            new StockItemCreatedEvent("sku1", "item1", "category1", 10L));
+            new StockItemCreatedEvent("sku1", "item1", "https://files.latihan.jocki.me/file1.img", "category1", 10L));
     }
 
     @Test
     public void createShouldFailWhenSkuAlreadyExist() {
-        StockItemCreateRequestDto createRequestDto = new StockItemCreateRequestDto("sku1", "item1", 10L, "category1");
+        StockItemCreateRequestDto createRequestDto = new StockItemCreateRequestDto("sku1", "item1", "https://files.latihan.jocki.me/file1.img", 10L, "category1");
         StockItem stockItem = new StockItem("1", "sku1", "item1", 10L, "category1");
         given(this.stockItemRepository.findBySku("sku1")).willReturn(Mono.just(stockItem));
         this.webClient.post().uri("/items").bodyValue(createRequestDto).exchange().expectStatus().is5xxServerError()
