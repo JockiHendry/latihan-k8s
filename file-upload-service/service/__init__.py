@@ -1,19 +1,16 @@
 import logging
-import uuid
-import json
 import os
+import uuid
+from multiprocessing import Process
 from pathlib import Path
 from flask import Flask, request
-from multiprocessing import Process, Queue
 from werkzeug.utils import secure_filename
-
 
 ALLOWED_EXTENSIONS = {'txt', 'doc', 'docx', 'xls', 'xlsx', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'svg'}
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
-thumbnail_command_queue = Queue()
 
 
-def create_app(command_queue=None):
+def create_app(test_publisher=None):
     # create Flask app
     app = Flask(__name__)
     config_string = 'service.config.{}Config'.format(app.env.title())
@@ -24,20 +21,18 @@ def create_app(command_queue=None):
     rabbitmq_user = app.config['RABBITMQ_USER']
     rabbitmq_password = app.config['RABBITMQ_PASSWORD']
     upload_folder = app.config['UPLOAD_FOLDER']
-    command_queue = thumbnail_command_queue if command_queue is None else command_queue
+    publisher = test_publisher
 
     # create message queue processes
     app.logger.info('RabbitMQ enabled? %s', app.config['ENABLE_RABBITMQ'])
     if app.config['ENABLE_RABBITMQ']:
-        from . import thumbnail_queue, thumbnail_worker
+        from . import thumbnail_worker, publisher as publisher_module
+        publisher = publisher_module.RabbitPublisher(rabbitmq_host, rabbitmq_port, rabbitmq_user, rabbitmq_password) \
+            if publisher is None else publisher
         thumbnail_worker_process = Process(target=thumbnail_worker.setup,
                                            args=(rabbitmq_host, rabbitmq_port, rabbitmq_user, rabbitmq_password),
                                            daemon=True)
         thumbnail_worker_process.start()
-        thumbnail_queue_process = Process(target=thumbnail_queue.setup,
-                                          args=(rabbitmq_host, rabbitmq_port, rabbitmq_user, rabbitmq_password,
-                                                command_queue), daemon=True)
-        thumbnail_queue_process.start()
 
     # routes
 
@@ -61,15 +56,15 @@ def create_app(command_queue=None):
             app.logger.info('Storing new file %s', filepath)
             file.save(filepath)
             app.logger.info('File %s stored', filename)
-            command_queue.put(json.dumps({'filename': filename, 'folder': folder, 'filepath': filepath})
-                                        .encode('utf-8'))
+            publisher.publish_file_uploaded({'filename': filename, 'folder': folder, 'filepath': filepath})\
+                if publisher is not None else None
             return {'filename': filename}
         app.logger.error('Invalid filename %s', file.filename)
         return {'error': 'Invalid filename'}, 500
 
     @app.route('/health', methods=['GET'])
     def health():
-        if thumbnail_worker_process.is_alive() and thumbnail_queue_process.is_alive():
+        if thumbnail_worker_process.is_alive():
             return {'status': 'ok'}, 200
         return {'status': 'error'}, 500
 

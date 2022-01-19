@@ -1,11 +1,12 @@
-import unittest
-import json
 import shutil
+import unittest
 from io import BytesIO
 from pathlib import Path
+from unittest.mock import Mock
+
 from flask import Flask
+
 from service import create_app
-from multiprocessing import Queue
 
 
 class WebTestCase(unittest.TestCase):
@@ -13,8 +14,8 @@ class WebTestCase(unittest.TestCase):
     def setUp(self):
         shutil.rmtree('/tmp/uploads', ignore_errors=True)
         Flask.env = 'testing'
-        self.queue = Queue()
-        self.app = create_app(self.queue)
+        self.publisher = Mock()
+        self.app = create_app(self.publisher)
         self.client = self.app.test_client()
 
     def test_upload(self):
@@ -42,8 +43,7 @@ class WebTestCase(unittest.TestCase):
     def test_publish_thumbnail_command_on_upload(self):
         response = self.client.post('/upload', content_type='multipart/form-data',
                                     data={'file': (BytesIO(b'this is a sample file'), 'sample.txt')})
-        self.assertEqual(1, self.queue.qsize())
-        self.assertDictEqual(json.loads(self.queue.get()), {
+        self.publisher.publish_file_uploaded.assert_called_once_with({
             'filename': response.json['filename'],
             'folder': '/tmp/uploads/',
             'filepath': '/tmp/uploads/{}'.format(response.json['filename'])
@@ -57,8 +57,7 @@ class WebTestCase(unittest.TestCase):
         self.assertIsNotNone(file_name)
         self.assertTrue(Path('/tmp/uploads/bucket1/{}'.format(file_name)))
         self.assertTrue(file_name.endswith('sample.txt'))
-        self.assertEqual(1, self.queue.qsize())
-        self.assertDictEqual(json.loads(self.queue.get()), {
+        self.publisher.publish_file_uploaded.assert_called_once_with({
             'filename': file_name,
             'folder': '/tmp/uploads/bucket1',
             'filepath': '/tmp/uploads/bucket1/{}'.format(file_name)

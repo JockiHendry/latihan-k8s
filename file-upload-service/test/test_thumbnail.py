@@ -21,7 +21,6 @@ class WebTestCase(unittest.TestCase):
             on_file_uploaded(channel_mock, method_mock, None, body)
             channel_mock.basic_ack.assert_called_once()
             self.assertTrue(Path('/tmp/uploads/test').exists())
-        call.assert_called_once()
         call.assert_called_once_with(['convert', '/tmp/uploads/test/img.png', '-thumbnail',
                                       '200x200>', '/tmp/uploads/test/thumbnail/image.png'])
         channel_mock.basic_ack.assert_called_once_with(method_mock.delivery_tag)
