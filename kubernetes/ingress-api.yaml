@@ -3,15 +3,13 @@ kind: Ingress
 metadata:
   name: ingress-api
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
-    nginx.ingress.kubernetes.io/enable-cors: 'true'
-    nginx.ingress.kubernetes.io/cors-allow-methods: 'POST, OPTIONS'
-    nginx.ingress.kubernetes.io/cors-allow-origin: 'https://web.latihan.jocki.me' # kpt-set: https://web.${domain}
+    konghq.com/plugins: 'app-cors-plugin, app-jwt-plugin'
+    konghq.com/strip-path: 'true'
   labels:
     app.kubernetes.io/version: v0.0.1
     env: staging
 spec:
-  ingressClassName: nginx
+  ingressClassName: kong
   tls:
     - hosts:
         - api.latihan.jocki.me # kpt-set: api.${domain}
@@ -20,14 +18,14 @@ spec:
     - host: api.latihan.jocki.me # kpt-set: api.${domain}
       http:
         paths:
-          - path: /stock-item-service/(.*)
+          - path: /stock-item-service
             pathType: Prefix
             backend:
               service:
                 name: stock-item-service
                 port:
                   number: 8080
-          - path: /search/(.*)
+          - path: /search
             pathType: Prefix
             backend:
               service:

@@ -8,6 +8,8 @@ metadata:
     app.kubernetes.io/component: app-server
     app.kubernetes.io/part-of: stock-item-service
     env: staging
+  annotations:
+    config.kubernetes.io/depends-on: 'apps/namespaces/default/StatefulSet/mongodb-item-stock, apps/namespaces/default/StatefulSet/keycloak, apps/namespaces/default/StatefulSet/rabbitmq, apps/namespaces/default/StatefulSet/kong'
 spec:
   replicas: 1
   selector:

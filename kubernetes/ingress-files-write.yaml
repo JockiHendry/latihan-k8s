@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-files-write
+  annotations:
+    konghq.com/plugins: 'app-cors-plugin, app-jwt-plugin'
+  labels:
+    app.kubernetes.io/version: v0.0.1
+    env: staging
+spec:
+  ingressClassName: kong
+  tls:
+    - hosts:
+        - files.latihan.jocki.me # kpt-set: files.${domain}
+      secretName: tls-secret
+  rules:
+    - host: files.latihan.jocki.me # kpt-set: files.${domain}
+      http:
+        paths:
+          - path: /.*/upload
+            pathType: Prefix
+            backend:
+              service:
+                name: file-upload-service
+                port:
+                  number: 8080

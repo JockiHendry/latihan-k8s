@@ -1,21 +1,9 @@
-# kubernetes
+# Setup
 
-## Description
-sample description
+Run `keycloak/setup-job.yaml` to create Keycloak realms, clients, default user and password that is needed for a quick demo.
 
-## Usage
+When running in minikube for development, execute the following command to expose Kong Ingress Controller and http://localhost:4200 as allowed origin for CORS:
 
-### Fetch the package
-`kpt pkg get REPO_URI[.git]/PKG_PATH[@VERSION] kubernetes`
-Details: https://kpt.dev/reference/cli/pkg/get/
-
-### View package content
-`kpt pkg tree kubernetes`
-Details: https://kpt.dev/reference/cli/pkg/tree/
-
-### Apply the package
 ```
-kpt live init kubernetes
-kpt live apply kubernetes --reconcile-timeout=2m --output=table
+$ kpt fn eval --image gcr.io/kpt-fn/starlark:v0.3.0 --fn-config setup-dev.yaml
 ```
-Details: https://kpt.dev/reference/cli/live/

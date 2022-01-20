@@ -6,6 +6,9 @@ metadata:
     app.kubernetes.io/name: keycloak-setup-job
     app.kubernetes.io/version: v0.0.1
     app.kubernetes.io/part-of: keycloak
+    env: staging
+  annotations:
+    config.kubernetes.io/depends-on: apps/namespaces/default/StatefulSet/keycloak
 spec:
   ttlSecondsAfterFinished: 100
   backoffLimit: 1
@@ -37,5 +40,9 @@ spec:
           args:
             - '-c'
             - |
-              kcadm.sh create realms -s realm=latihan -s enabled=true --no-config --server https://auth.${DOMAIN_NAME}/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD}; kcadm.sh create clients -r latihan -s clientId=latihan-k8s -s "redirectUris=[\"https://web.${DOMAIN_NAME}/*\"]" -s 'webOrigins=["*"]' -s publicClient=true -s protocol=openid-connect -s enabled=true --no-config --server https://auth.${DOMAIN_NAME}/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD}; kcadm.sh create users -r latihan -s username=admin -s email=admin@jocki.me -s emailVerified=true -s enabled=true --no-config --server https://auth.${DOMAIN_NAME}/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD}; kcadm.sh set-password -r latihan --username admin -p ${USER_PASSWORD} --no-config --server https://auth.${DOMAIN_NAME}/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD}; kcadm.sh create clients -r latihan -s clientId=locust -s enabled=false -s serviceAccountsEnabled=true -s authorizationServicesEnabled=true -s standardFlowEnabled=false -s clientAuthenticatorType=client-secret -s secret=locust -s 'attributes={"access.token.lifespan":18000}' --no-config --server https://auth.${DOMAIN_NAME}/auth --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD} --realm master
+              kcadm.sh create realms -s realm=latihan -s enabled=true --no-config --server https://auth.${DOMAIN_NAME}/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD}; kcadm.sh create clients -r latihan -s clientId=latihan-k8s -s "redirectUris=[\"https://web.${DOMAIN_NAME}/*\"]" -s 'webOrigins=["*"]' -s publicClient=true -s protocol=openid-connect -s enabled=true --no-config --server https://auth.${DOMAIN_NAME}/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD}; kcadm.sh create users -r latihan -s username=admin -s email=admin@jocki.me -s emailVerified=true -s enabled=true --no-config --server https://auth.${DOMAIN_NAME}/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD}; kcadm.sh set-password -r latihan --username admin -p ${USER_PASSWORD} --no-config --server https://auth.${DOMAIN_NAME}/auth --realm master --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD}; kcadm.sh create clients -r latihan -s clientId=locust -s enabled=true -s serviceAccountsEnabled=true -s authorizationServicesEnabled=true -s standardFlowEnabled=false -s clientAuthenticatorType=client-secret -s secret=locust -s 'attributes={"access.token.lifespan":18000}' --no-config --server https://auth.${DOMAIN_NAME}/auth --user ${ADMIN_USERNAME} --password ${ADMIN_PASSWORD} --realm master
       restartPolicy: Never
+    metadata:
+      labels:
+        app.kubernetes.io/version: v0.0.1
+        env: staging

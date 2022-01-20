@@ -1,0 +1,22 @@
+apiVersion: fn.kpt.dev/v1alpha1
+kind: StarlarkRun
+metadata:
+  name: add-host-port
+  annotations:
+    config.kubernetes.io/local-config: 'true'
+source: |
+  def configure(resources):
+    for r in resources:
+        if r['kind'] == 'Deployment' and r['metadata']['name'] == 'ingress-kong':
+            containers = r['spec']['template']['spec']['containers']
+            for c in containers:
+                if c['name'] == 'proxy':
+                    ports = c['ports']
+                    for p in ports:
+                        if p['name'] == 'proxy':
+                            p['hostPort'] = 80
+                        elif p['name'] == 'proxy-ssl':
+                            p['hostPort'] = 443
+        elif r['metadata']['name'] == 'app-cors-plugin':
+          r['config']['origins'].append('http://localhost:4200')
+  configure(ctx.resource_list['items'])

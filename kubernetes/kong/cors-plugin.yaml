@@ -1,0 +1,8 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: app-cors-plugin
+config:
+  origins:
+    - 'https://web.latihan.jocki.me' # kpt-set: https://web.${domain}
+plugin: cors

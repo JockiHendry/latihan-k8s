@@ -1,0 +1,7 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: app-jwt-plugin
+plugin: jwt
+config:
+  secret_is_base64: false

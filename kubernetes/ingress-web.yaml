@@ -2,13 +2,11 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-web
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
   labels:
     app.kubernetes.io/version: v0.0.1
     env: staging
 spec:
-  ingressClassName: nginx
+  ingressClassName: kong
   tls:
     - hosts:
         - web.latihan.jocki.me # kpt-set: web.${domain}

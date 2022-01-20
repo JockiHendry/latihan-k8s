@@ -13,7 +13,7 @@ metadata:
     app.kubernetes.io/version: v0.0.1
     env: staging
 spec:
-  ingressClassName: nginx
+  ingressClassName: kong
   rules:
     - http:
         paths:

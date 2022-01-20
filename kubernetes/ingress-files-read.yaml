@@ -1,18 +1,15 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-files
+  name: ingress-files-read
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
-    nginx.ingress.kubernetes.io/enable-cors: 'true'
-    nginx.ingress.kubernetes.io/cors-allow-methods: 'POST, OPTIONS'
-    nginx.ingress.kubernetes.io/cors-allow-origin: 'https://web.latihan.jocki.me' # kpt-set: https://web.${domain}
-    nginx.ingress.kubernetes.io/proxy-body-size: 50m
+    konghq.com/plugins: app-cors-plugin
+    konghq.com/strip-path: 'true'
   labels:
     app.kubernetes.io/version: v0.0.1
     env: staging
 spec:
-  ingressClassName: nginx
+  ingressClassName: kong
   tls:
     - hosts:
         - files.latihan.jocki.me # kpt-set: files.${domain}
@@ -21,7 +18,7 @@ spec:
     - host: files.latihan.jocki.me # kpt-set: files.${domain}
       http:
         paths:
-          - path: /(.*)
+          - path: /
             pathType: Prefix
             backend:
               service:

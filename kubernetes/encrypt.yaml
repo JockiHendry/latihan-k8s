@@ -2,6 +2,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: encrypt-config
+  labels:
+    app.kubernetes.io/version: v0.0.1
+    env: staging
 data:
   cmd: encrypt
   cmd-json-path-filter: '$[?(@.kind==''Secret'')]'

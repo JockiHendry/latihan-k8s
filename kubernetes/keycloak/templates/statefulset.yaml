@@ -12,6 +12,8 @@ metadata:
     app.kubernetes.io/component: keycloak
     app.kubernetes.io/version: v0.0.1
     env: staging
+  annotations:
+    config.kubernetes.io/depends-on: apps/namespaces/default/StatefulSet/keycloak-postgresql
 spec:
   replicas: 1
   podManagementPolicy: Parallel
