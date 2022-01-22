@@ -1,10 +1,11 @@
 import {Component, forwardRef, Input} from '@angular/core';
-import {HttpClient, HttpEvent, HttpEventType, HttpRequest} from '@angular/common/http';
+import {HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest} from '@angular/common/http';
 import {finalize, last, tap} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {environment} from '../../../environments/environment';
+import {OidcSecurityService} from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-image-upload',
@@ -37,7 +38,7 @@ export class ImageUploadComponent implements ControlValueAccessor {
   onChange = (_: string|null) => {};
   onTouched = () => {};
 
-  constructor(private httpClient: HttpClient, private snackBar: MatSnackBar) { }
+  constructor(private httpClient: HttpClient, private snackBar: MatSnackBar, private oidcSecurityService: OidcSecurityService) { }
 
   get uploadedFilename(): string|null {
     return this._uploadedFilename;
@@ -56,7 +57,10 @@ export class ImageUploadComponent implements ControlValueAccessor {
     const formData = new FormData();
     const file = fileElement.files[0];
     formData.append('file', file);
-    const req = new HttpRequest('POST', `${this.fileServerUrl}${this.bucket ? '/' + this.bucket : ''}/upload`, formData, {reportProgress: true, responseType: 'json'});
+    const req = new HttpRequest('POST', `${this.fileServerUrl}${this.bucket ? '/' + this.bucket : ''}/upload`, formData, {
+        reportProgress: true, responseType: 'json',
+        headers: new HttpHeaders().append('Authorization', `Bearer ${this.oidcSecurityService.getAccessToken()}`)
+    });
     this.httpClient.request(req).pipe(
       tap((event: HttpEvent<any>) => this.handleUploadEvent(event, file)),
       finalize(() => this.uploadProgress = 0),
