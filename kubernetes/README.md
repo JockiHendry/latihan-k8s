@@ -7,3 +7,9 @@ When running in minikube for development, execute the following command to expos
 ```
 $ kpt fn eval --image gcr.io/kpt-fn/starlark:v0.3.0 --fn-config setup-dev.yaml
 ```
+
+To refresh public key used by Kong by automatically retrieving from Keycloak, run the following function:
+
+```
+$ kpt fn eval --image gcr.io/kpt-fn/starlark:v0.3.0 --network --fn-config kong/refresh-jwt-secret.yaml
+```
