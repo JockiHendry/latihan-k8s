@@ -6,14 +6,12 @@ metadata:
     app.kubernetes.io/name: file-upload-service
     app.kubernetes.io/component: app-server
     app.kubernetes.io/part-of: file-upload-service
-    app.kubernetes.io/version: v0.0.1
     env: staging
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: file-upload-service
-      app.kubernetes.io/version: v0.0.1
       env: staging
   serviceName: file-upload-service-headless
   template:
@@ -22,7 +20,6 @@ spec:
         app.kubernetes.io/name: file-upload-service
         app.kubernetes.io/component: app-server
         app.kubernetes.io/part-of: file-upload-service
-        app.kubernetes.io/version: v0.0.1
         env: staging
     spec:
       securityContext:
@@ -30,7 +27,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
       containers:
         - name: file-upload-service
-          image: 'ghcr.io/jockihendry/latihan-k8s-file-upload-service:edge' # kpt-set: ghcr.io/jockihendry/latihan-k8s-file-upload-service:${file_upload_service_version}
+          image: 'ghcr.io/jockihendry/latihan-k8s-file-upload-service:sha-1b2ddf4' # kpt-set: ghcr.io/jockihendry/latihan-k8s-file-upload-service:${file_upload_service_version}
           env:
             - name: RABBITMQ_USER
               value: user
@@ -80,7 +77,6 @@ metadata:
     app.kubernetes.io/name: file-upload-service-nginx-config
     app.kubernetes.io/component: app-server
     app.kubernetes.io/part-of: file-upload-service
-    app.kubernetes.io/version: v0.0.1
     env: staging
 data:
   nginx.conf: |
@@ -109,13 +105,11 @@ metadata:
     app.kubernetes.io/name: file-upload-service
     app.kubernetes.io/component: app-server
     app.kubernetes.io/part-of: file-upload-service
-    app.kubernetes.io/version: v0.0.1
     env: staging
 spec:
   type: ClusterIP
   selector:
     app.kubernetes.io/name: file-upload-service
-    app.kubernetes.io/version: v0.0.1
     env: staging
   ports:
     - name: http
@@ -126,7 +120,6 @@ kind: PersistentVolume
 metadata:
   name: file-upload-storage
   labels:
-    app.kubernetes.io/version: v0.0.1
     env: staging
 spec:
   capacity:
@@ -151,7 +144,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: file-upload-storage-claim
   labels:
-    app.kubernetes.io/version: v0.0.1
     env: staging
 spec:
   accessModes:

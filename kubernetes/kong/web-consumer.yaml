@@ -4,6 +4,8 @@ metadata:
   name: web
   annotations:
     kubernetes.io/ingress.class: kong
+  labels:
+    env: staging
 username: web
 credentials:
   - app-jwt-secret

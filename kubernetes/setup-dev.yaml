@@ -3,7 +3,7 @@ kind: StarlarkRun
 metadata:
   name: add-host-port
   annotations:
-    config.kubernetes.io/local-config: "true"
+    config.kubernetes.io/local-config: 'true'
 source: |
   for r in ctx.resource_list['items']:
       if r['kind'] == 'Deployment' and r['metadata']['name'] == 'ingress-kong':

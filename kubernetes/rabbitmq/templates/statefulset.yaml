@@ -9,7 +9,6 @@ metadata:
     helm.sh/chart: rabbitmq-8.24.10
     app.kubernetes.io/instance: rabbitmq
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/version: v0.0.1
     env: staging
 spec:
   serviceName: rabbitmq-headless
@@ -21,7 +20,6 @@ spec:
     matchLabels:
       app.kubernetes.io/name: rabbitmq
       app.kubernetes.io/instance: rabbitmq
-      app.kubernetes.io/version: v0.0.1
       env: staging
   template:
     metadata:
@@ -30,7 +28,6 @@ spec:
         helm.sh/chart: rabbitmq-8.24.10
         app.kubernetes.io/instance: rabbitmq
         app.kubernetes.io/managed-by: Helm
-        app.kubernetes.io/version: v0.0.1
         env: staging
       annotations:
         checksum/config: 877826227be3aa88ffdcd06942bc7dc429afe1e14dd3354c7f5356d91b7c1c79
@@ -46,7 +43,6 @@ spec:
                   matchLabels:
                     app.kubernetes.io/name: rabbitmq
                     app.kubernetes.io/instance: rabbitmq
-                    app.kubernetes.io/version: v0.0.1
                     env: staging
                 namespaces:
                   - default
@@ -178,7 +174,6 @@ spec:
         labels:
           app.kubernetes.io/name: rabbitmq
           app.kubernetes.io/instance: rabbitmq
-          app.kubernetes.io/version: v0.0.1
           env: staging
       spec:
         accessModes:

@@ -4,12 +4,10 @@ kind: PodDisruptionBudget
 metadata:
   name: elasticsearch-master-pdb
   labels:
-    app.kubernetes.io/version: v0.0.1
     env: staging
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
       app: elasticsearch-master
-      app.kubernetes.io/version: v0.0.1
       env: staging

@@ -13,7 +13,6 @@ metadata:
     # field is broken in some versions of Kubernetes:
     # https://github.com/kubernetes/kubernetes/issues/58662
     service.alpha.kubernetes.io/tolerate-unready-endpoints: 'true'
-    app.kubernetes.io/version: v0.0.1
     env: staging
   namespace: default
 spec:
@@ -30,5 +29,4 @@ spec:
   selector:
     app.kubernetes.io/name: postgresql
     app.kubernetes.io/instance: keycloak
-    app.kubernetes.io/version: v0.0.1
     env: staging

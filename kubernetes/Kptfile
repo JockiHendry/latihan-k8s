@@ -8,7 +8,6 @@ pipeline:
   mutators:
     - image: 'gcr.io/kpt-fn/set-labels:v0.1.5'
       configMap:
-        app.kubernetes.io/version: v0.0.2
         env: staging
     - image: 'gcr.io/kpt-fn/apply-setters:v0.2.0'
       configMap:

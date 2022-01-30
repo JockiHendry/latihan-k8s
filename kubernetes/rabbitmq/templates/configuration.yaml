@@ -9,7 +9,6 @@ metadata:
     helm.sh/chart: rabbitmq-8.24.10
     app.kubernetes.io/instance: rabbitmq
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/version: v0.0.1
     env: staging
 data:
   rabbitmq.conf: |-

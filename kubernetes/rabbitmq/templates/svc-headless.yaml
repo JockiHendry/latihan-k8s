@@ -9,7 +9,6 @@ metadata:
     helm.sh/chart: rabbitmq-8.24.10
     app.kubernetes.io/instance: rabbitmq
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/version: v0.0.1
     env: staging
 spec:
   clusterIP: None
@@ -29,6 +28,5 @@ spec:
   selector:
     app.kubernetes.io/name: rabbitmq
     app.kubernetes.io/instance: rabbitmq
-    app.kubernetes.io/version: v0.0.1
     env: staging
   publishNotReadyAddresses: true

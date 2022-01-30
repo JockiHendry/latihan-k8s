@@ -10,7 +10,6 @@ metadata:
     app.kubernetes.io/instance: keycloak
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: keycloak
-    app.kubernetes.io/version: v0.0.1
     env: staging
   annotations:
     config.kubernetes.io/depends-on: apps/namespaces/default/StatefulSet/keycloak-postgresql
@@ -25,7 +24,6 @@ spec:
       app.kubernetes.io/name: keycloak
       app.kubernetes.io/instance: keycloak
       app.kubernetes.io/component: keycloak
-      app.kubernetes.io/version: v0.0.1
       env: staging
   template:
     metadata:
@@ -38,7 +36,6 @@ spec:
         app.kubernetes.io/instance: keycloak
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: keycloak
-        app.kubernetes.io/version: v0.0.1
         env: staging
     spec:
       serviceAccountName: keycloak
@@ -51,7 +48,6 @@ spec:
                   matchLabels:
                     app.kubernetes.io/name: keycloak
                     app.kubernetes.io/instance: keycloak
-                    app.kubernetes.io/version: v0.0.1
                     env: staging
                 namespaces:
                   - default

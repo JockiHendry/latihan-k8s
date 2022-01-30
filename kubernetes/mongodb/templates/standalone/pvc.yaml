@@ -10,7 +10,6 @@ metadata:
     app.kubernetes.io/instance: mongodb-item-stock
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: mongodb
-    app.kubernetes.io/version: v0.0.1
     env: staging
 spec:
   accessModes:

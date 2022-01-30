@@ -3,7 +3,6 @@ kind: Ingress
 metadata:
   name: ingress-web
   labels:
-    app.kubernetes.io/version: v0.0.1
     env: staging
 spec:
   ingressClassName: kong

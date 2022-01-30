@@ -5,7 +5,6 @@ metadata:
   annotations:
     konghq.com/plugins: 'app-cors-plugin, app-jwt-plugin'
   labels:
-    app.kubernetes.io/version: v0.0.1
     env: staging
 spec:
   ingressClassName: kong

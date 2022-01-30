@@ -4,7 +4,6 @@ metadata:
   name: keycloak-setup-job
   labels:
     app.kubernetes.io/name: keycloak-setup-job
-    app.kubernetes.io/version: v0.0.1
     app.kubernetes.io/part-of: keycloak
     env: staging
   annotations:
@@ -44,5 +43,4 @@ spec:
       restartPolicy: Never
     metadata:
       labels:
-        app.kubernetes.io/version: v0.0.1
         env: staging

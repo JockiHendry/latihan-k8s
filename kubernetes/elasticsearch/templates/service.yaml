@@ -8,7 +8,6 @@ metadata:
     release: elasticsearch
     chart: elasticsearch
     app: elasticsearch-master
-    app.kubernetes.io/version: v0.0.1
     env: staging
 spec:
   type: ClusterIP
@@ -16,7 +15,6 @@ spec:
     release: elasticsearch
     chart: elasticsearch
     app: elasticsearch-master
-    app.kubernetes.io/version: v0.0.1
     env: staging
   ports:
   - name: http
@@ -36,7 +34,6 @@ metadata:
     release: elasticsearch
     chart: elasticsearch
     app: elasticsearch-master
-    app.kubernetes.io/version: v0.0.1
     env: staging
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: 'true'
@@ -46,7 +43,6 @@ spec:
   publishNotReadyAddresses: true
   selector:
     app: elasticsearch-master
-    app.kubernetes.io/version: v0.0.1
     env: staging
   ports:
   - name: http

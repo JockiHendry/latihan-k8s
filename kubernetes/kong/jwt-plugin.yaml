@@ -2,6 +2,8 @@ apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata:
   name: app-jwt-plugin
+  labels:
+    env: staging
 plugin: jwt
 config:
   secret_is_base64: false

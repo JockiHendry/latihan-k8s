@@ -4,7 +4,6 @@ metadata:
   name: angular-web
   labels:
     app.kubernetes.io/name: angular-web
-    app.kubernetes.io/version: v0.0.1
     app.kubernetes.io/component: web-server
     app.kubernetes.io/part-of: angular-web
     env: staging
@@ -13,20 +12,18 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: angular-web
-      app.kubernetes.io/version: v0.0.1
       env: staging
   template:
     metadata:
       labels:
         app.kubernetes.io/name: angular-web
-        app.kubernetes.io/version: v0.0.1
         app.kubernetes.io/component: web-server
         app.kubernetes.io/part-of: angular-web
         env: staging
     spec:
       containers:
         - name: angular-web
-          image: 'ghcr.io/jockihendry/latihan-k8s-angular-web:edge' # kpt-set: ghcr.io/jockihendry/latihan-k8s-angular-web:${web_service_version}
+          image: 'ghcr.io/jockihendry/latihan-k8s-angular-web:sha-76cfad6' # kpt-set: ghcr.io/jockihendry/latihan-k8s-angular-web:${web_service_version}
           livenessProbe:
             tcpSocket:
               port: 80
@@ -41,7 +38,6 @@ metadata:
   name: angular-web
   labels:
     app.kubernetes.io/name: angular-web
-    app.kubernetes.io/version: v0.0.1
     app.kubernetes.io/component: web-server
     app.kubernetes.io/part-of: angular-web
     env: staging
@@ -49,7 +45,6 @@ spec:
   type: ClusterIP
   selector:
     app.kubernetes.io/name: angular-web
-    app.kubernetes.io/version: v0.0.1
     env: staging
   ports:
     - name: http

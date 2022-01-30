@@ -8,7 +8,6 @@ metadata:
     release: elasticsearch
     chart: elasticsearch
     app: elasticsearch-master
-    app.kubernetes.io/version: v0.0.1
     env: staging
   annotations:
     esMajorVersion: '7'
@@ -17,7 +16,6 @@ spec:
   selector:
     matchLabels:
       app: elasticsearch-master
-      app.kubernetes.io/version: v0.0.1
       env: staging
   replicas: 1
   podManagementPolicy: Parallel
@@ -27,7 +25,6 @@ spec:
   - metadata:
       name: elasticsearch-master
       labels:
-        app.kubernetes.io/version: v0.0.1
         env: staging
     spec:
       accessModes:
@@ -43,7 +40,6 @@ spec:
         release: elasticsearch
         chart: elasticsearch
         app: elasticsearch-master
-        app.kubernetes.io/version: v0.0.1
         env: staging
       annotations:
         configchecksum: 5986b4f615d0c9d553a5c35c0d58782f3aaaabb2c18f7328b0d8232088c949f
