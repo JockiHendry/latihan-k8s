@@ -2,10 +2,12 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import {PathUtil} from '../app/shared/path-util';
+
 export const environment = {
   production: false,
-  backendUrl: 'https://api.latihan.jocki.me',
-  fileServerUrl: 'https://files.latihan.jocki.me',
+  backendUrl: PathUtil.generate('https://api.latihan.jocki.me'),
+  fileServerUrl: PathUtil.generate('https://files.latihan.jocki.me'),
 };
 
 /*
