@@ -8,10 +8,10 @@ spec:
   ingressClassName: kong
   tls:
     - hosts:
-        - web.latihan.jocki.me # kpt-set: web.${domain}
+        - web-default.latihan.jocki.me # kpt-set: web-${tenant}.${domain}
       secretName: tls-secret
   rules:
-    - host: web.latihan.jocki.me # kpt-set: web.${domain}
+    - host: web-default.latihan.jocki.me # kpt-set: web-${tenant}.${domain}
       http:
         paths:
           - pathType: Prefix

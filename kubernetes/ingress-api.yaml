@@ -11,10 +11,10 @@ spec:
   ingressClassName: kong
   tls:
     - hosts:
-        - api.latihan.jocki.me # kpt-set: api.${domain}
+        - api-default.latihan.jocki.me # kpt-set: api-${tenant}.${domain}
       secretName: tls-secret
   rules:
-    - host: api.latihan.jocki.me # kpt-set: api.${domain}
+    - host: api-default.latihan.jocki.me # kpt-set: api-${tenant}.${domain}
       http:
         paths:
           - path: /stock-item-service

@@ -6,5 +6,5 @@ metadata:
     env: staging
 config:
   origins:
-    - 'https://web.latihan.jocki.me' # kpt-set: https://web.${domain}
+    - 'https://web-default.latihan.jocki.me' # kpt-set: https://web-${tenant}.${domain}
 plugin: cors

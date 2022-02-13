@@ -23,8 +23,8 @@ spec:
                 name: keycloak
                 port:
                   name: http
-      host: auth.latihan.jocki.me # kpt-set: auth.${domain}
+      host: auth-default.latihan.jocki.me # kpt-set: auth-${tenant}.${domain}
   tls:
     - hosts:
-        - auth.latihan.jocki.me # kpt-set: auth.${domain}
+        - auth-default.latihan.jocki.me # kpt-set: auth-${tenant}.${domain}
       secretName: tls-secret

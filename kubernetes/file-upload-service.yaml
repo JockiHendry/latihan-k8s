@@ -116,30 +116,6 @@ spec:
       port: 8080
 ---
 apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: file-upload-storage
-  labels:
-    env: staging
-spec:
-  capacity:
-    storage: 100Mi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-storage
-  local:
-    path: /data
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - minikube
----
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: file-upload-storage-claim
@@ -148,8 +124,6 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  volumeMode: Filesystem
   resources:
     requests:
       storage: 100Mi
-  storageClassName: local-storage

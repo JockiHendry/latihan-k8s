@@ -10,10 +10,10 @@ spec:
   ingressClassName: kong
   tls:
     - hosts:
-        - files.latihan.jocki.me # kpt-set: files.${domain}
+        - files-default.latihan.jocki.me # kpt-set: files-${tenant}.${domain}
       secretName: tls-secret
   rules:
-    - host: files.latihan.jocki.me # kpt-set: files.${domain}
+    - host: files-default.latihan.jocki.me # kpt-set: files-${tenant}.${domain}
       http:
         paths:
           - path: /.*/upload

@@ -12,11 +12,12 @@ pipeline:
     - image: 'gcr.io/kpt-fn/apply-setters:v0.2.0'
       configMap:
         domain: latihan.jocki.me
+        tenant: default
         elasticsearch_version: 7.15.0
         keycloak_postgre_version: 11.14.0-debian-10-r0
         keycloak_version: 15.0.2-debian-10-r94
         mongodb_version: 4.4.10-debian-10-r44
         rabbitmq_version: 3.9.11-debian-10-r0
         stock_item_service_version: sha-76cfad6
-        web_service_version: sha-76cfad6
+        web_service_version: sha-6cbd496
         file_upload_service_version: sha-1b2ddf4
